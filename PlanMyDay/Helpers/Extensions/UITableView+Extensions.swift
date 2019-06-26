@@ -6,4 +6,11 @@
 //  Copyright © 2019 Talip. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+extension UITableView{
+    func register(cellIdentifier : String){
+        let nib = UINib(nibName: cellIdentifier, bundle: nil)
+        self.register(nib, forCellReuseIdentifier: cellIdentifier)
+    }
+}

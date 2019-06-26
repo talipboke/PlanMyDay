@@ -7,3 +7,17 @@
 //
 
 import Foundation
+
+class DetailVM : BaseVM{
+    
+    
+    typealias DetailTuple = (index : Int? , task : TodoTask)
+    
+    var detailTask : DetailTuple = (0,TodoTask())
+    var pageType : DetailPageType = .detail
+    
+    var addedNewTask : ((TodoTask)->())?
+    
+    
+    var editedTheTask : ((DetailTuple,_ isDeleted : Bool) ->())?
+}

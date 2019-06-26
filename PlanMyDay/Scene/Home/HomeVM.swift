@@ -7,3 +7,12 @@
 //
 
 import Foundation
+
+import RxSwift //Autocomplete ve okumama sorunundan dolayı yazıldı.
+
+class HomeVM : BaseVM {
+    
+    ///Uygulamadaki yapılacaklar listesini tutan değişkendir.
+    internal lazy var taskList: Variable<[TodoTask]> = Variable([])
+    
+}

@@ -6,4 +6,16 @@
 //  Copyright © 2019 Talip. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class DetailView : UIView{
+    @IBOutlet weak var detailTextView : UITextView!
+
+    @IBOutlet weak var deleteBtn : UIButton!
+    
+
+//    lazy var rightBarBtn : UIBarButtonItem = {
+//        var btn = UIBarButtonItem()
+//        return btn
+//    }()
+}

@@ -7,3 +7,9 @@
 //
 
 import Foundation
+
+
+struct AppConst{
+    public static let add = "Ekle"
+    public static let edit = "Düzenle"
+}

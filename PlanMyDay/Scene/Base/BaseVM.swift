@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+import RxSwift
+class BaseVM{
+    let disposeBag = DisposeBag()
+}

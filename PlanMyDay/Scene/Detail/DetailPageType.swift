@@ -7,3 +7,9 @@
 //
 
 import Foundation
+
+
+enum DetailPageType{
+    case add
+    case detail
+}

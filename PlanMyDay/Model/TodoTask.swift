@@ -7,3 +7,17 @@
 //
 
 import Foundation
+
+
+class TodoTask {
+    var title : String{
+        return longDescription.left(20)
+    }
+    var longDescription : String = ""
+    
+    
+    init(longDescription : String? = "") {
+        
+        self.longDescription = longDescription!
+    }
+}
