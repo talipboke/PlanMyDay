@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vAs-ge-eqz">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--HomeVC-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="HomeVC" customModule="PlanMyDay" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="HomeView" customModule="PlanMyDay" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="h5e-LQ-qYw">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t5q-xY-edx">
+                                <rect key="frame" x="295" y="587" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="t5q-xY-edx" secondAttribute="height" id="f2p-3j-dOj"/>
+                                    <constraint firstAttribute="width" constant="50" id="xwB-F0-Ojk"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="add_button"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="t5q-xY-edx" secondAttribute="trailing" constant="30" id="3Pz-BN-eev"/>
+                            <constraint firstItem="h5e-LQ-qYw" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="6IT-v3-ih2"/>
+                            <constraint firstItem="h5e-LQ-qYw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="G3q-CR-GDI"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="t5q-xY-edx" secondAttribute="bottom" constant="30" id="Ga0-wh-7x8"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="h5e-LQ-qYw" secondAttribute="trailing" id="XZs-fU-xmY"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="h5e-LQ-qYw" secondAttribute="bottom" id="pV7-fL-POT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <connections>
+                            <outlet property="addBtn" destination="t5q-xY-edx" id="lOb-jJ-yMg"/>
+                            <outlet property="table" destination="h5e-LQ-qYw" id="9lH-jJ-KAP"/>
+                        </connections>
+                    </view>
+                    <navigationItem key="navigationItem" id="HlL-sH-yzD"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="14" y="118"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="dBx-6Z-BIR">
+            <objects>
+                <navigationController id="vAs-ge-eqz" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="18y-lD-c52">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="D8L-GG-hAB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="unc-ul-sab" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-702" y="119"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="add_button" width="42" height="42"/>
+    </resources>
+</document>
