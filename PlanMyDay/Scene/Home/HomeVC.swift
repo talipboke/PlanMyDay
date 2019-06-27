@@ -11,6 +11,8 @@ import UIKit
 import RxCocoa
 import RxSwift
 
+
+
 class HomeVC: BaseVC<HomeView> {
 
     
@@ -19,6 +21,8 @@ class HomeVC: BaseVC<HomeView> {
     override func viewDidLoad() {
         super.viewDidLoad()
        
+        viewModel.fetchToDoListFromDB()
+        
         self.registerCells()
         
         castedView.addBtn.rx.tap
@@ -36,11 +40,7 @@ class HomeVC: BaseVC<HomeView> {
         
         self.castedView.table.rx.itemSelected
             .subscribe(onNext: { [weak self] indexPath in
-                //self?.viewModel.taskList.value.remove(at: indexPath.row)
-                
                 self?.navigateToDetail(indexPath)
-                
-                
             }).disposed(by: viewModel.disposeBag)
         
     }
@@ -58,8 +58,7 @@ class HomeVC: BaseVC<HomeView> {
             
             detailVC.viewModel.addedNewTask = { [weak self] (task) in
                 self?.viewModel.taskList.value.append(task)
-                
-                //TODO : Burada veri tabanına yazmak gerekli
+                self?.viewModel.insertNewTaskToDB(longDescription: task.longDescription)
             }
             
             detailVC.viewModel.editedTheTask = { [weak self] response,isDeleted in
@@ -67,13 +66,13 @@ class HomeVC: BaseVC<HomeView> {
                 if let index = response.index{
                     
                     if isDeleted{
-                        self?.viewModel.taskList.value.remove(at: index)
+                        self?.viewModel.deleteFromDB(by: index)
                     }else{
-                        self?.viewModel.taskList.value[index] = response.task
+                        self?.viewModel.updateFromDB(by: index , updatedTask : response.task)
                     }
                 }
               
-                //TODO : Burada veri tabanına yazmak gerekli
+           
             }
            
         })

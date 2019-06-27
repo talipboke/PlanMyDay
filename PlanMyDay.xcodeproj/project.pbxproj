@@ -20,7 +20,7 @@
 		CB2B539122C155D600405B1D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2B539022C155D600405B1D /* HomeView.swift */; };
 		CB2B539322C15F4A00405B1D /* HomeVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2B539222C15F4A00405B1D /* HomeVM.swift */; };
 		CB2B539522C15FD600405B1D /* BaseVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2B539422C15FD600405B1D /* BaseVM.swift */; };
-		CB2B539822C168AE00405B1D /* LocalDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2B539722C168AE00405B1D /* LocalDataManager.swift */; };
+		CB80B9EF22C4286900AFF909 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB80B9EE22C4286900AFF909 /* CoreDataManager.swift */; };
 		CBB3A1D822C3D4540025FA72 /* NSObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB3A1D722C3D4540025FA72 /* NSObject+Extensions.swift */; };
 		CBB3A1DE22C3D4BA0025FA72 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB3A1DC22C3D4BA0025FA72 /* TaskCell.swift */; };
 		CBB3A1DF22C3D4BA0025FA72 /* TaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBB3A1DD22C3D4BA0025FA72 /* TaskCell.xib */; };
@@ -69,7 +69,7 @@
 		CB2B539022C155D600405B1D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CB2B539222C15F4A00405B1D /* HomeVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVM.swift; sourceTree = "<group>"; };
 		CB2B539422C15FD600405B1D /* BaseVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVM.swift; sourceTree = "<group>"; };
-		CB2B539722C168AE00405B1D /* LocalDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManager.swift; sourceTree = "<group>"; };
+		CB80B9EE22C4286900AFF909 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		CBB3A1D722C3D4540025FA72 /* NSObject+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Extensions.swift"; sourceTree = "<group>"; };
 		CBB3A1DC22C3D4BA0025FA72 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		CBB3A1DD22C3D4BA0025FA72 /* TaskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskCell.xib; sourceTree = "<group>"; };
@@ -219,7 +219,7 @@
 		CB2B539622C1689F00405B1D /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				CB2B539722C168AE00405B1D /* LocalDataManager.swift */,
+				CB80B9EE22C4286900AFF909 /* CoreDataManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -472,7 +472,6 @@
 			files = (
 				CBB3A1D822C3D4540025FA72 /* NSObject+Extensions.swift in Sources */,
 				CB2B536622C1519600405B1D /* HomeVC.swift in Sources */,
-				CB2B539822C168AE00405B1D /* LocalDataManager.swift in Sources */,
 				CBB3A1E422C3D8150025FA72 /* UITableView+Extensions.swift in Sources */,
 				CBB3A1F322C3F6170025FA72 /* String+Extensions.swift in Sources */,
 				CB2B536C22C1519600405B1D /* PlanMyDay.xcdatamodeld in Sources */,
@@ -482,6 +481,7 @@
 				CBB3A1F822C403170025FA72 /* AppConst.swift in Sources */,
 				CBB3A1ED22C3EA1A0025FA72 /* UIViewController+Extensions.swift in Sources */,
 				CBB3A1E922C3E7900025FA72 /* DetailView.swift in Sources */,
+				CB80B9EF22C4286900AFF909 /* CoreDataManager.swift in Sources */,
 				CB2B536422C1519600405B1D /* AppDelegate.swift in Sources */,
 				CBB3A1F622C3FBE90025FA72 /* DetailPageType.swift in Sources */,
 				CBB3A1EF22C3EA4E0025FA72 /* UIStoryboard+Extensions.swift in Sources */,
