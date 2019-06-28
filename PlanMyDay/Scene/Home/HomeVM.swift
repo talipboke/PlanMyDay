@@ -21,15 +21,14 @@ class HomeVM : BaseVM {
         self.coreDataManager = coreDataManager
     }
     
-   
     //TODO : Unit testi yazılacak.
     func fetchToDoListFromDB(){
         
-        let todoList = coreDataManager.fetch(dbEntity: ToDoEntitiy.self)
+        let todoList = try? coreDataManager.fetch(dbEntity: ToDoEntitiy.self)
         
         //Rxswift NSManagerObject'i desteklemediği için for ile döndüm :D
         var tempTaskList = [TodoTask]()
-        for task in todoList{
+        for task in todoList ?? [] {
             let tempTask = TodoTask.init(longDescription: task.longDescription ?? "" , MOId: task.objectID)
             tempTaskList.append(tempTask)
             
@@ -40,14 +39,15 @@ class HomeVM : BaseVM {
     //Unit testi yazılacak.
     func insertNewTaskToDB(longDescription : String){
     
-        coreDataManager.insert(type: ToDoEntitiy.self) { (toDoEntity) in
+        try! coreDataManager.insert(type: ToDoEntitiy.self) { (toDoEntity) in
             toDoEntity.longDescription = longDescription
         }
     }
     
     //TODO : Unit testi yazılacak.
     func deleteFromDB(by index : Int){
-        coreDataManager.delete(by: taskList.value[index].id)
+        
+        try! coreDataManager.delete(by: taskList.value[index].id)
         taskList.value.remove(at: index)
     }
     
@@ -55,7 +55,7 @@ class HomeVM : BaseVM {
     func updateFromDB(by index : Int , updatedTask : TodoTask){
         print(taskList.value[index].id)
         
-        coreDataManager.update(newObject: ToDoEntitiy.self, MOid: taskList.value[index].id) { (newObject) in
+        try! coreDataManager.update(newObject: ToDoEntitiy.self, MOid: taskList.value[index].id) { (newObject) in
             newObject?.longDescription = updatedTask.longDescription
         }
         

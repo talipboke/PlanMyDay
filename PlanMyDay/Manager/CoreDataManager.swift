@@ -11,24 +11,31 @@ import CoreData
 
 
 protocol CoreDataProtocol{
-    func fetch<M : NSManagedObject>(dbEntity : M.Type) -> [M]
-    func delete(by objectID: NSManagedObjectID)
-    func insert<M : NSManagedObject>(type : M.Type , changeOnObject : (M)->())
+    func fetch<M : NSManagedObject>(dbEntity : M.Type) throws -> [M]
+    func delete(by objectID: NSManagedObjectID) throws
+    func insert<M : NSManagedObject>(type : M.Type , changeOnObject : (M)->()) throws
+    func update<M : NSManagedObject>(newObject : M.Type , MOid : NSManagedObjectID , changeOnObject : (M?)->()) throws
+}
+
+enum CoreDataManagerError : Error{
+    case fetching(errorDescription : String)  // TODO : Buraya açıklaması özellikle yazılması gerekebilir.
+    case saving(errorDescription : String)
+    case deleting(errorDescription : String)
+    case updating(errorDescription : String)
 }
 
 class CoreDataManager : CoreDataProtocol{
   
     
-    //TODO : Hangisini kullanmak daha mantıklı? Aynı zamanda weak'e döndürülecek.
-    
-    //private(set) weak var context : NSManagedObjectContext?
-    private let context : NSManagedObjectContext
+    //TODO : Değişken weak ' e döndürülecek.ARC ' de memory leak almaması için.
+
+    private(set) var context : NSManagedObjectContext
     
     init(context : NSManagedObjectContext ) {
         self.context = context
     }
     
-    func fetch<M : NSManagedObject>(dbEntity : M.Type) -> [M]{
+    func fetch<M : NSManagedObject>(dbEntity : M.Type) throws -> [M]{
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: dbEntity.description())
 
         var result = [M]()
@@ -42,35 +49,52 @@ class CoreDataManager : CoreDataProtocol{
             }
 
         } catch {
-            print("Unable to fetch managed objects for entity \(dbEntity.className).")
+            throw CoreDataManagerError.fetching(errorDescription : error.localizedDescription)
+            //print("Unable to fetch managed objects for entity \(dbEntity.className).")
         }
 
         return result
     }
 
     
-    func insert<M : NSManagedObject>(type : M.Type , changeOnObject : (M)->()){
+    func insert<M : NSManagedObject>(type : M.Type , changeOnObject : (M)->()) throws{
         
         let newObject = M(context: context)
         changeOnObject(newObject)
-        try? context.save()
+        
+        do{
+            try context.save()
+        }catch{
+            throw CoreDataManagerError.saving(errorDescription: error.localizedDescription)
+        }
+    
     }
     
-    func delete(by objectID: NSManagedObjectID) {
+    func delete(by objectID: NSManagedObjectID) throws {
 
         // TODO : Error handling ' i yazılacak.
         
         let managedObject = context.object(with: objectID)
         context.delete(managedObject)
-        try? context.save()
-    
+        
+        do{
+            try context.save()
+        }catch{
+            throw CoreDataManagerError.deleting(errorDescription: error.localizedDescription)
+        }
+        
     }
     
-    func update<M : NSManagedObject>(newObject : M.Type , MOid : NSManagedObjectID , changeOnObject : (M?)->()){
+    func update<M : NSManagedObject>(newObject : M.Type , MOid : NSManagedObjectID , changeOnObject : (M?)->()) throws{
         
         let managedObject = context.object(with: MOid) as? M
         changeOnObject(managedObject)
-        try? context.save()
+        
+        do{
+            try context.save()
+        }catch{
+            throw CoreDataManagerError.updating(errorDescription : error.localizedDescription)
+        }
     }
 }
 
