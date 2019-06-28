@@ -12,11 +12,9 @@ import RxCocoa
 import RxSwift
 
 
-
 class HomeVC: BaseVC<HomeView> {
 
-    
-    lazy private var viewModel = HomeVM()
+    lazy private var viewModel = HomeVM(coreDataManager: CoreDataManager(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext))
     
     override func viewDidLoad() {
         super.viewDidLoad()

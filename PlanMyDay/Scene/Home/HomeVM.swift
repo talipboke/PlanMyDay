@@ -12,15 +12,20 @@ import RxSwift //Autocomplete ve okumama sorunundan dolayı yazıldı.
 
 class HomeVM : BaseVM {
     
-    //TODO : CoreDataManager inject edilecek.
-    
     ///Uygulamadaki yapılacaklar listesini tutan değişkendir.
     internal lazy var taskList: Variable<[TodoTask]> = Variable([])
     
+    //TODO : CoreDataManager weak ' e çekilecek yoksa bağlı olduğu obje silindiğinde ARC ' den silinemeyecek ve memory leak oluşturacak.
+    private let coreDataManager : CoreDataManager
+    init(coreDataManager : CoreDataManager) {
+        self.coreDataManager = coreDataManager
+    }
     
+   
     //TODO : Unit testi yazılacak.
     func fetchToDoListFromDB(){
-        let todoList = CoreDataManager.fetch(dbEntity: ToDoEntitiy.self)
+        
+        let todoList = coreDataManager.fetch(dbEntity: ToDoEntitiy.self)
         
         //Rxswift NSManagerObject'i desteklemediği için for ile döndüm :D
         var tempTaskList = [TodoTask]()
@@ -32,29 +37,29 @@ class HomeVM : BaseVM {
         self.taskList.value = tempTaskList
     }
     
+    //Unit testi yazılacak.
     func insertNewTaskToDB(longDescription : String){
-        let newObject = ToDoEntitiy(context: CoreDataManager.context)
-        newObject.longDescription = longDescription
-        try? CoreDataManager.context.save()
+    
+        coreDataManager.insert(type: ToDoEntitiy.self) { (toDoEntity) in
+            toDoEntity.longDescription = longDescription
+        }
     }
     
     //TODO : Unit testi yazılacak.
     func deleteFromDB(by index : Int){
-        CoreDataManager.delete(by: taskList.value[index].id)
+        coreDataManager.delete(by: taskList.value[index].id)
         taskList.value.remove(at: index)
     }
     
     //TODO : Unit testiyazılacak.
     func updateFromDB(by index : Int , updatedTask : TodoTask){
         print(taskList.value[index].id)
-        //Type casting'den dolayı farklı bir metod bulunmalı generik yapılması için.
-        let managedObject = CoreDataManager.context.object(with: taskList.value[index].id) as? ToDoEntitiy
-        managedObject?.longDescription = updatedTask.longDescription
-        try? CoreDataManager.context.save()
         
-       // CoreDataManager.update(newObject: NSManagedObject())
+        coreDataManager.update(newObject: ToDoEntitiy.self, MOid: taskList.value[index].id) { (newObject) in
+            newObject?.longDescription = updatedTask.longDescription
+        }
+        
         taskList.value[index] = updatedTask
-        
     }
     
 }

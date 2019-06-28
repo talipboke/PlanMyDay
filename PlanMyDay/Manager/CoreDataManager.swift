@@ -10,65 +10,88 @@ import UIKit
 import CoreData
 
 
-class CoreDataManager{
- 
+protocol CoreDataProtocol{
+    func fetch<M : NSManagedObject>(dbEntity : M.Type) -> [M]
+    func delete(by objectID: NSManagedObjectID)
+    func insert<M : NSManagedObject>(type : M.Type , changeOnObject : (M)->())
+}
+
+class CoreDataManager : CoreDataProtocol{
+  
     
-    public static let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    //TODO : Hangisini kullanmak daha mantıklı? Aynı zamanda weak'e döndürülecek.
     
+    //private(set) weak var context : NSManagedObjectContext?
+    private let context : NSManagedObjectContext
     
-    class func fetch<M : NSManagedObject>(dbEntity : M.Type) -> [M]{
+    init(context : NSManagedObjectContext ) {
+        self.context = context
+    }
+    
+    func fetch<M : NSManagedObject>(dbEntity : M.Type) -> [M]{
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: dbEntity.description())
-        
+
         var result = [M]()
-        
+
         do {
             // Execute Fetch Request
             let records = try context.fetch(fetchRequest)
-            
+
             if let records = records as? [M] {
                 result = records
             }
-            
+
         } catch {
             print("Unable to fetch managed objects for entity \(dbEntity.className).")
         }
-        
+
         return result
     }
+
     
-    class func delete(by objectID: NSManagedObjectID) {
+    func insert<M : NSManagedObject>(type : M.Type , changeOnObject : (M)->()){
+        
+        let newObject = M(context: context)
+        changeOnObject(newObject)
+        try? context.save()
+    }
+    
+    func delete(by objectID: NSManagedObjectID) {
+
+        // TODO : Error handling ' i yazılacak.
         
         let managedObject = context.object(with: objectID)
         context.delete(managedObject)
         try? context.save()
+    
     }
     
-    //Doğru çalışmıyor baştan yazılacak.
-//    class func update(newObject : NSManagedObject){
-//        var managedObject = context.object(with: newObject.objectID)
-//        managedObject = newObject
-//        try? context.save()
-//    }
-}
-
-extension NSManagedObjectContext{
-    func fetchObjects <T: NSManagedObject>(_ entityClass:T.Type,
-                                           sortBy: [NSSortDescriptor]? = nil,
-                                           predicate: NSPredicate? = nil) throws -> [T] {
+    func update<M : NSManagedObject>(newObject : M.Type , MOid : NSManagedObjectID , changeOnObject : (M?)->()){
         
-        let request: NSFetchRequest<T>
-        if #available(iOS 10.0, *) {
-            request = entityClass.fetchRequest() as! NSFetchRequest<T>
-        } else {
-            let entityName = String(describing: entityClass)
-            request = NSFetchRequest(entityName: entityName)
-        }
-        
-        request.returnsObjectsAsFaults = false
-        request.predicate = predicate
-        request.sortDescriptors = sortBy
-        
-        let fetchedResult = try self.fetch(request)
-        return fetchedResult
+        let managedObject = context.object(with: MOid) as? M
+        changeOnObject(managedObject)
+        try? context.save()
     }
 }
+
+//extension NSManagedObjectContext{
+//    func fetchObjects <T: NSManagedObject>(_ entityClass:T.Type,
+//                                           sortBy: [NSSortDescriptor]? = nil,
+//                                           predicate: NSPredicate? = nil) throws -> [T] {
+//
+//        let request: NSFetchRequest<T>
+//        if #available(iOS 10.0, *) {
+//            request = entityClass.fetchRequest() as! NSFetchRequest<T>
+//        } else {
+//            let entityName = String(describing: entityClass)
+//            request = NSFetchRequest(entityName: entityName)
+//        }
+//
+//        request.returnsObjectsAsFaults = false
+//        request.predicate = predicate
+//        request.sortDescriptors = sortBy
+//
+//        let fetchedResult = try self.fetch(request)
+//        return fetchedResult
+//    }
+//}
