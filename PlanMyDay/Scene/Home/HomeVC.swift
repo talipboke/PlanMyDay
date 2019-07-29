@@ -14,7 +14,7 @@ import RxSwift
 
 class HomeVC: BaseVC<HomeView> {
 
-    lazy private var viewModel = HomeVM(coreDataManager: CoreDataManager(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext))
+    lazy private var viewModel = HomeVM(coreDataManager: CoreDataManager())
     
     override func viewDidLoad() {
         super.viewDidLoad()
