@@ -15,6 +15,7 @@ protocol CoreDataProtocol{
     func delete(by objectID: NSManagedObjectID) throws
     func insert<M : NSManagedObject>(type : M.Type , changeOnObject : (M)->()) throws
     func update<M : NSManagedObject>(newObject : M.Type , MOid : NSManagedObjectID , changeOnObject : (M?)->()) throws
+    func createTemporaryObject<M : NSManagedObject>(type : M.Type) -> M?
 }
 
 enum CoreDataManagerError : Error{
@@ -26,10 +27,6 @@ enum CoreDataManagerError : Error{
 
 class CoreDataManager : CoreDataProtocol{
   
-    //TODO : Değişken weak ' e döndürülecek.ARC ' de memory leak almaması için.
-
-    //private(set) var context : NSManagedObjectContext
-    
     // MARK: - Core Data stack
     
     private lazy var persistentContainer: NSPersistentContainer = {
@@ -74,6 +71,16 @@ class CoreDataManager : CoreDataProtocol{
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
+        }
+    }
+    
+    ///DB'ye yazmadan M tipinde obje oluşurmamızı sağlar.
+    func createTemporaryObject<M : NSManagedObject>(type : M.Type) -> M?{
+        if let entity = NSEntityDescription.entity(forEntityName: type.description(), in: self.persistentContainer.viewContext){
+            let object = NSManagedObject.init(entity: entity, insertInto: nil)
+            return object as? M
+        }else{
+            return nil
         }
     }
     
