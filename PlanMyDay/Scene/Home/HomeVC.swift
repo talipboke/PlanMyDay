@@ -31,7 +31,7 @@ class HomeVC: BaseVC<HomeView> {
         
         viewModel.taskList.asObservable()
             .bind(to: castedView.table.rx.items(cellIdentifier: TaskCell.className,cellType: TaskCell.self)) {row, element, cell in
-                cell.titleLbl.text = element.title
+                cell.titleLbl.text = element.longDescription?.left(20)
             }
             .disposed(by: viewModel.disposeBag)
         
@@ -56,7 +56,7 @@ class HomeVC: BaseVC<HomeView> {
             
             detailVC.viewModel.addedNewTask = { [weak self] (task) in
                 self?.viewModel.taskList.value.append(task)
-                self?.viewModel.insertNewTaskToDB(longDescription: task.longDescription)
+                self?.viewModel.insertNewTaskToDB(longDescription: task.longDescription ?? "")
             }
             
             detailVC.viewModel.editedTheTask = { [weak self] response,isDeleted in

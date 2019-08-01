@@ -8,10 +8,10 @@
 
 import UIKit
 import CoreData
-
+import RxSwift
 
 protocol CoreDataProtocol{
-    func fetch<M : NSManagedObject>(dbEntity : M.Type) throws -> [M]
+    func fetch<M : NSManagedObject>(dbEntity : M.Type) throws -> Variable<[M]>
     func delete(by objectID: NSManagedObjectID) throws
     func insert<M : NSManagedObject>(type : M.Type , changeOnObject : (M)->()) throws
     func update<M : NSManagedObject>(newObject : M.Type , MOid : NSManagedObjectID , changeOnObject : (M?)->()) throws
@@ -84,24 +84,25 @@ class CoreDataManager : CoreDataProtocol{
         }
     }
     
-    func fetch<M : NSManagedObject>(dbEntity : M.Type) throws -> [M]{
+    func fetch<M : NSManagedObject>(dbEntity : M.Type) throws -> Variable<[M]>{
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: dbEntity.description())
 
-        var result = [M]()
+        //var result = [M]()
+        
+        let result: Variable<[M]> = Variable([])
 
         do {
             // Execute Fetch Request
             let records = try persistentContainer.viewContext.fetch(fetchRequest)
 
             if let records = records as? [M] {
-                result = records
+                result.value = records
             }
 
         } catch {
             throw CoreDataManagerError.fetching(errorDescription : error.localizedDescription)
             //print("Unable to fetch managed objects for entity \(dbEntity.className).")
         }
-
         return result
     }
 

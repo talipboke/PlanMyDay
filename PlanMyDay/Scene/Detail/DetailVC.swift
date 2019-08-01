@@ -25,8 +25,12 @@ class DetailVC : BaseVC<DetailView>{
             .throttle(0.2, scheduler: MainScheduler.instance)
             .subscribe(onNext : { [weak self] _ in
                 
-                let newTask = TodoTask.init(longDescription: self?.castedView.detailTextView.text ?? "")
-                self?.viewModel.detailTask.task = newTask
+                let coreDataManager = CoreDataManager()
+                if let newTask = coreDataManager.createTemporaryObject(type: ToDoEntitiy.self){
+                    newTask.longDescription = self?.castedView.detailTextView.text ?? ""
+                    self?.viewModel.detailTask.task = newTask
+                }
+                
             })
             .disposed(by: viewModel.disposeBag)
     }
@@ -37,7 +41,7 @@ class DetailVC : BaseVC<DetailView>{
         case .detail:
             
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: AppConst.edit, style: .plain, target: self, action: #selector(editTheTask))
-            self.navigationItem.title = viewModel.detailTask.task.title
+            self.navigationItem.title = viewModel.detailTask.task.longDescription?.left(20)
             castedView.detailTextView.text = viewModel.detailTask.task.longDescription
  
         case .add:
@@ -62,7 +66,9 @@ class DetailVC : BaseVC<DetailView>{
     }
     
     @IBAction func deleteTheTask(_ sender: Any) {
+        
         sendNewTaskBack(isDeleted: true)
+        
     }
 
     @objc private func addNewTask(){

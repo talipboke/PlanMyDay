@@ -11,12 +11,12 @@ import Foundation
 class DetailVM : BaseVM{
     
     
-    typealias DetailTuple = (index : Int? , task : TodoTask)
+    typealias DetailTuple = (index : Int? , task : ToDoEntitiy)
     
-    var detailTask : DetailTuple = (0,TodoTask())
+    var detailTask : DetailTuple = (0,ToDoEntitiy())
     var pageType : DetailPageType = .detail
     
-    var addedNewTask : ((TodoTask)->())?
+    var addedNewTask : ((ToDoEntitiy)->())?
     
     
     var editedTheTask : ((DetailTuple,_ isDeleted : Bool) ->())?

@@ -13,7 +13,7 @@ import RxSwift //Autocomplete ve okumama sorunundan dolayı yazıldı.
 class HomeVM : BaseVM {
     
     ///Uygulamadaki yapılacaklar listesini tutan değişkendir.
-    internal lazy var taskList: Variable<[TodoTask]> = Variable([])
+    internal lazy var taskList: Variable<[ToDoEntitiy]> = Variable([])
     
     //TODO : CoreDataManager weak ' e çekilecek yoksa bağlı olduğu obje silindiğinde ARC ' den silinemeyecek ve memory leak oluşturacak.
     private let coreDataManager : CoreDataManager
@@ -24,16 +24,12 @@ class HomeVM : BaseVM {
     //TODO : Unit testi yazılacak.
     func fetchToDoListFromDB(){
         
-        let todoList = try? coreDataManager.fetch(dbEntity: ToDoEntitiy.self)
-        
-        //Rxswift NSManagerObject'i desteklemediği için for ile döndüm :D
-        var tempTaskList = [TodoTask]()
-        for task in todoList ?? [] {
-            let tempTask = TodoTask.init(longDescription: task.longDescription ?? "" , MOId: task.objectID)
-            tempTaskList.append(tempTask)
-            
+        do{
+            self.taskList = try coreDataManager.fetch(dbEntity: ToDoEntitiy.self)
+        }catch{
+            //Throw 'lanıp VC ' de alert çıkarılabilir.
+            print(error)
         }
-        self.taskList.value = tempTaskList
     }
     
     //Unit testi yazılacak.
@@ -47,15 +43,15 @@ class HomeVM : BaseVM {
     //TODO : Unit testi yazılacak.
     func deleteFromDB(by index : Int){
         
-        try! coreDataManager.delete(by: taskList.value[index].id)
+        try! coreDataManager.delete(by: taskList.value[index].objectID)
         taskList.value.remove(at: index)
     }
     
     //TODO : Unit testiyazılacak.
-    func updateFromDB(by index : Int , updatedTask : TodoTask){
-        print(taskList.value[index].id)
+    func updateFromDB(by index : Int , updatedTask : ToDoEntitiy){
+        print(taskList.value[index].objectID)
         
-        try! coreDataManager.update(newObject: ToDoEntitiy.self, MOid: taskList.value[index].id) { (newObject) in
+        try! coreDataManager.update(newObject: ToDoEntitiy.self, MOid: taskList.value[index].objectID) { (newObject) in
             newObject?.longDescription = updatedTask.longDescription
         }
         
