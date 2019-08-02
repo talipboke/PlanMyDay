@@ -24,13 +24,7 @@ class DetailVC : BaseVC<DetailView>{
         self.castedView.detailTextView.rx.didChange
             .throttle(0.2, scheduler: MainScheduler.instance)
             .subscribe(onNext : { [weak self] _ in
-                
-                let coreDataManager = CoreDataManager()
-                if let newTask = coreDataManager.createTemporaryObject(type: ToDoEntitiy.self){
-                    newTask.longDescription = self?.castedView.detailTextView.text ?? ""
-                    self?.viewModel.detailTask.task = newTask
-                }
-                
+                self?.viewModel.createAndSetObject(longDescription: self?.castedView.detailTextView.text ?? "")
             })
             .disposed(by: viewModel.disposeBag)
     }

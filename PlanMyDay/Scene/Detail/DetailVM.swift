@@ -8,8 +8,10 @@
 
 import Foundation
 
+
 class DetailVM : BaseVM{
     
+    private let coreDataManager = CoreDataManager()
     
     typealias DetailTuple = (index : Int? , task : ToDoEntitiy)
     
@@ -20,4 +22,12 @@ class DetailVM : BaseVM{
     
     
     var editedTheTask : ((DetailTuple,_ isDeleted : Bool) ->())?
+    
+    func createAndSetObject(longDescription : String){
+
+        if let newTask = coreDataManager.createTemporaryObject(type: ToDoEntitiy.self){
+            newTask.longDescription = longDescription
+            self.detailTask.task = newTask
+        }
+    }
 }
